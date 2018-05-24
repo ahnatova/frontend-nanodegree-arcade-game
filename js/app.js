@@ -39,8 +39,17 @@ const Player = function(x, y) {
     this.sprite = 'images/char-boy.png';
 }
 
-Player.prototype.update = function(dt) {
-    
+Player.prototype.update = function(dt) { 
+    if (player.y < 40) { //resets player's position after reaching the water
+        this.x = 200;
+        this.y = 400;
+    } else if (player.x > 400) { //prohibits movement out of the canvas x axis
+        this.x = 400;
+    } else if (player.x < 0) { //prohibits movement out of the canvas y axis
+        this.x = 0;
+    } else if (player.y > 400) {
+        this.y = 400;
+    }
 };
 
 Player.prototype.render = function() {
