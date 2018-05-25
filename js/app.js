@@ -1,3 +1,5 @@
+'use strict';
+
 // Enemies our player must avoid
 var Enemy = function(x,y,speed) {
     this.x = x;
@@ -14,11 +16,6 @@ Enemy.prototype.update = function(dt) {
         this.x = 0;
         this.speed = this.speed + (Math.floor((Math.random() * 10) + 1));
     } 
-
-    //collision
-   if(this.x < player.x + 55 && this.x + 55 > player.x && this.y < player.y + 30 && this.y + 30 > player.y) {
-       player.resetPosition();
-   }
 };
 
 // Draw the enemy on the screen, required method for game
@@ -35,7 +32,7 @@ const Player = function(x, y) {
 Player.prototype.update = function(dt) { 
     if (this.y < 40) { //resets player's position after reaching the water
         this.resetPosition();
-        alert("You've won!");
+        alert('You have won!');
     } else if (this.x > 400) { //prohibits movement out of the canvas x axis
         this.x = 400;
     } else if (this.x < 0) { 
@@ -66,12 +63,20 @@ Player.prototype.resetPosition = function() {
     this.y = 400;
 };
 
-const firstEnemy = new Enemy(0,40,50);
-const secondEnemy = new Enemy(0,130,100);
-const thirdEnemy = new Enemy(0,220,30);
-
 const player = new Player(200,400);
-const allEnemies = [firstEnemy, secondEnemy, thirdEnemy];
+const allEnemies = [
+    new Enemy(0,40,50), 
+    new Enemy(0,130,100), 
+    new Enemy(0,220,30)
+];
+
+function checkCollisions() {
+    allEnemies.forEach(enemy => {
+        if(enemy.x < player.x + 75 && enemy.x + 75 > player.x && enemy.y < player.y + 30 && enemy.y + 30 > player.y) {
+          player.resetPosition();
+        }
+    });
+};
 
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.
